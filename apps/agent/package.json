@@ -1,0 +1,27 @@
+{
+  "name": "@prospect-agent/agent",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AI engine — monitors social platforms, detects intent, generates replies",
+  "main": "./dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.36.0",
+    "@prospect-agent/shared": "workspace:*",
+    "bullmq": "^5.0.0",
+    "dotenv": "^16.4.0",
+    "ioredis": "^5.3.0",
+    "twitter-api-v2": "^1.17.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.4.0"
+  }
+}

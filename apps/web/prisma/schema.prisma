@@ -1,0 +1,109 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── User / Account ───────────────────────────────────────────────────────────
+
+model User {
+  id        String   @id @default(cuid())
+  clerkId   String   @unique
+  email     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company     Company?
+  subscription Subscription?
+  trial        Trial?
+}
+
+// ─── Company Profile ──────────────────────────────────────────────────────────
+
+model Company {
+  id                  String   @id @default(cuid())
+  userId              String   @unique
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name                String
+  productDescription  String   @db.Text
+  idealCustomerProfile String  @db.Text
+  toneOfVoice         String
+  keywords            String[] // monitoring keywords
+  competitorNames     String[]
+  twitterHandle       String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  prospects Prospect[]
+}
+
+// ─── Prospect ─────────────────────────────────────────────────────────────────
+
+model Prospect {
+  id                 String         @id @default(cuid())
+  companyId          String
+  company            Company        @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  platform           String         @default("twitter")
+  externalId         String         // tweet ID, reddit post ID, etc.
+  authorHandle       String
+  authorDisplayName  String
+  content            String         @db.Text
+  url                String
+  detectedAt         DateTime       @default(now())
+  intentScore        Float
+  intentReason       String         @db.Text
+  signalType         String
+  suggestedReply     String         @db.Text
+  replyConfidence    Float
+  replyNotes         String?
+  status             ProspectStatus @default(PENDING_REVIEW)
+  finalReply         String?        @db.Text
+  postedAt           DateTime?
+
+  @@unique([companyId, externalId]) // prevent duplicate prospects per company
+  @@index([companyId, status])
+}
+
+enum ProspectStatus {
+  PENDING_REVIEW
+  APPROVED
+  EDITED
+  POSTED
+  SKIPPED
+  AUTO_SKIPPED
+}
+
+// ─── Billing ──────────────────────────────────────────────────────────────────
+
+model Trial {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  startedAt DateTime @default(now())
+  expiresAt DateTime
+  used      Boolean  @default(false)
+}
+
+model Subscription {
+  id                   String             @id @default(cuid())
+  userId               String             @unique
+  user                 User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stripeCustomerId     String             @unique
+  stripeSubscriptionId String?            @unique
+  stripePriceId        String?
+  status               SubscriptionStatus @default(TRIALING)
+  currentPeriodEnd     DateTime?
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+}
+
+enum SubscriptionStatus {
+  TRIALING
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  UNPAID
+}

@@ -1,0 +1,26 @@
+{
+  "name": "prospect-agent",
+  "private": true,
+  "version": "0.1.0",
+  "description": "AI prospect agent SaaS — finds and engages customers on social media",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "pnpm --parallel --filter './apps/*' dev",
+    "dev:web": "pnpm --filter @prospect-agent/web dev",
+    "dev:agent": "pnpm --filter @prospect-agent/agent dev",
+    "build": "pnpm --filter @prospect-agent/shared build && pnpm --parallel --filter './apps/*' build",
+    "lint": "pnpm --recursive lint",
+    "typecheck": "pnpm --recursive typecheck"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "packageManager": "pnpm@9.0.0"
+}
