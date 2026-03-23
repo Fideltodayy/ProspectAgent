@@ -1,0 +1,62 @@
+{
+  "name": "ProspectAgent",
+  "version": "0.1.0",
+  "description": "Autonomous AI agent that monitors social platforms for buying signals and drafts contextual replies on behalf of SMBs.",
+  "operator": {
+    "wallet": "0xa2a7AF45Ae2A75540344ddD0Fc4f945A8E1CFDC8",
+    "type": "eoa"
+  },
+  "identity": {
+    "protocol": "ERC-8004",
+    "agentId": 35648,
+    "registry": "eip155:8453:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432",
+    "registrationTxHash": "0x6f96697e4dce9d6ea778f14f782a34cbede0491c935eff694825b1017173ae32",
+    "selfCustodyTxHash": "0xca2d86512e8892e0cff7f6ecd01806484443627a6fcf75545eaa81363726b6a7"
+  },
+  "model": "claude-sonnet-4-6",
+  "harness": "claude-code",
+  "framework": "anthropic-agents-sdk",
+  "tools": [
+    "twitter-api-v2:search",
+    "twitter-api-v2:post",
+    "anthropic:messages",
+    "bullmq:queue",
+    "bullmq:worker",
+    "prisma:database",
+    "viem:sign",
+    "hardhat:deploy"
+  ],
+  "capabilities": [
+    "social-monitoring",
+    "intent-detection",
+    "reply-generation",
+    "prospect-queuing",
+    "on-chain-payments",
+    "human-review-loop"
+  ],
+  "taskCategories": [
+    "customer-acquisition",
+    "social-listening",
+    "sales-automation",
+    "content-generation"
+  ],
+  "compute": {
+    "maxConcurrency": 2,
+    "monitoringIntervalSeconds": 300,
+    "maxResultsPerKeyword": 20,
+    "minIntentScore": 0.6
+  },
+  "payments": {
+    "subscriptionContract": "0x4870bD69facFDd44448a7286f0dA49377a19aA25",
+    "network": "base-sepolia",
+    "token": "USDC",
+    "tokenAddress": "0x036CbD53842c5426634e7929541eC2318f3dCF7e"
+  },
+  "safety": {
+    "humanApprovalRequired": true,
+    "autoPostEnabled": false,
+    "phase": 1,
+    "rationale": "Phase 1 is fully human-in-the-loop. AI drafts replies, human reviews and approves before posting. This prevents ToS violations and ensures brand safety."
+  },
+  "repo": "https://github.com/Fideltodayy/ProspectAgent"
+}
