@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import { startMonitoringWorker, DetectedProspect } from './queue/prospect-queue';
+import { startScheduler } from './scheduler';
 import { config } from './config';
 
 console.log('[agent] Starting prospect agent service...');
@@ -28,12 +29,14 @@ async function handleProspectFound(prospect: DetectedProspect): Promise<void> {
   console.log(`[agent] Prospect pushed to review queue: @${prospect.authorHandle}`);
 }
 
-// Start the worker
+// Start the worker and scheduler
 const worker = startMonitoringWorker(handleProspectFound);
+const schedulerTimer = startScheduler();
 
 // Graceful shutdown
 async function shutdown() {
   console.log('[agent] Shutting down...');
+  clearInterval(schedulerTimer);
   await worker.close();
   process.exit(0);
 }

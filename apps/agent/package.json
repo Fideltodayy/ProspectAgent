@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.36.0",
+    "@prisma/client": "^5.22.0",
     "@prospect-agent/shared": "workspace:*",
     "bullmq": "^5.0.0",
     "dotenv": "^16.4.0",

@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  ioredis: ^5.3.0
+
 importers:
 
   .:
@@ -17,6 +20,9 @@ importers:
       '@anthropic-ai/sdk':
         specifier: ^0.36.0
         version: 0.36.3
+      '@prisma/client':
+        specifier: ^5.22.0
+        version: 5.22.0(prisma@5.22.0)
       '@prospect-agent/shared':
         specifier: workspace:*
         version: link:../../packages/shared
@@ -4778,7 +4784,7 @@ packages:
       aws4fetch: ^1.0.20
       db0: '>=0.2.1'
       idb-keyval: ^6.2.1
-      ioredis: ^5.4.2
+      ioredis: ^5.3.0
       uploadthing: ^7.4.4
     peerDependenciesMeta:
       '@azure/app-configuration':

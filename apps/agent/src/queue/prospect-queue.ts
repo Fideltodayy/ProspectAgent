@@ -1,12 +1,12 @@
 import { Queue, Worker, Job } from 'bullmq';
-import IORedis from 'ioredis';
 import { CompanyProfile } from '@prospect-agent/shared';
 import { config } from '../config';
 import { searchTweets } from '../monitor/twitter-monitor';
 import { detectIntent } from '../agents/intent-detector';
 import { generateReply } from '../agents/reply-generator';
 
-const connection = new IORedis(config.redis.url, { maxRetriesPerRequest: null });
+// Pass URL directly — BullMQ manages its own IORedis connection internally
+const connection = { url: config.redis.url, maxRetriesPerRequest: null as null };
 
 // Queue: one job per company monitoring run
 export const monitoringQueue = new Queue('monitoring', { connection });

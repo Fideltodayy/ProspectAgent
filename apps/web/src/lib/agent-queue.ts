@@ -1,5 +1,4 @@
 import { Queue } from 'bullmq';
-import IORedis from 'ioredis';
 import type { Company } from '@prisma/client';
 
 // The web app schedules monitoring jobs into the same Redis queue
@@ -9,9 +8,7 @@ let _queue: Queue | null = null;
 
 function getQueue() {
   if (!_queue) {
-    const connection = new IORedis(process.env.REDIS_URL ?? 'redis://localhost:6379', {
-      maxRetriesPerRequest: null,
-    });
+    const connection = { url: process.env.REDIS_URL ?? 'redis://localhost:6379', maxRetriesPerRequest: null as null };
     _queue = new Queue('monitoring', { connection });
   }
   return _queue;
